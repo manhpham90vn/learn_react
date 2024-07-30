@@ -22,9 +22,12 @@ function TodoFeature(props) {
     ]
 
     const [todo, setTodo] = React.useState(initTodoList)
+    const [filedTodo, setFiledTodo] = React.useState('all')
 
     const handleTodoClick = (item, index) => {
+        // clone to new object
         const newTodo = [...todo]
+
         newTodo[index] = {
             ...newTodo[index],
             status: newTodo[index].status === 'new' ? 'completed' : 'new'
@@ -32,10 +35,29 @@ function TodoFeature(props) {
         setTodo(newTodo)
     }
 
+    const handleShowAll = () => {
+        setFiledTodo('all')
+    }
+
+    const handleShowCompleted = () => {
+        setFiledTodo('completed')
+    }
+
+    const handleShowNew = () => {
+        setFiledTodo('new')
+    }
+
+    const renderTodo = todo.filter(todo => filedTodo === 'all' || filedTodo === todo.status)
+
     return (
         <div>
             <h3>Todo List</h3>
-            <TodoList todoList={todo} onTodoClick={handleTodoClick}/>
+            <TodoList todoList={renderTodo} onTodoClick={handleTodoClick}/>
+            <div>
+                <button onClick={handleShowAll}>Show All</button>
+                <button onClick={handleShowCompleted}>Show Completed</button>
+                <button onClick={handleShowNew}>Show New</button>
+            </div>
         </div>
     );
 }
