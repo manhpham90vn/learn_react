@@ -1,6 +1,5 @@
 import React from 'react';
 import TodoList from "./components/TodoList";
-import todoList from "./components/TodoList";
 
 function TodoFeature(props) {
     const initTodoList = [
@@ -24,9 +23,11 @@ function TodoFeature(props) {
     const [todo, setTodo] = React.useState(initTodoList)
     const [filedTodo, setFiledTodo] = React.useState('all')
 
-    const handleTodoClick = (item, index) => {
+    const handleTodoClick = (item) => {
+        console.log(item)
         // clone to new object
         const newTodo = [...todo]
+        const index = newTodo.findIndex(x => x.id === item.id)
 
         newTodo[index] = {
             ...newTodo[index],
