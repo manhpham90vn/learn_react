@@ -2,6 +2,7 @@ import React, {useEffect, useMemo} from 'react';
 import TodoList from "./components/TodoList";
 import {useLocation, useNavigate} from "react-router-dom";
 import queryString from "query-string";
+import TodoForm from "./components/TodoForm";
 
 function TodoFeature(props) {
     const initTodoList = [
@@ -70,8 +71,21 @@ function TodoFeature(props) {
         return todo.filter(todo => filter === 'all' || filter === todo.status)
     }, [todo, filter])
 
+    const handleTodoFormSubmit = (values) => {
+        const id = todo.reduce((max, task) => (task.id > max ? task.id : max), todo[0].id)
+        const newTodo = {
+            id: id + 1,
+            title: values.title,
+            status: 'new',
+        }
+        setTodo([...todo, newTodo])
+    }
+
     return (
         <div>
+            <h3>What todo</h3>
+            <TodoForm onSubmit={handleTodoFormSubmit}/>
+
             <h3>Todo List</h3>
             <TodoList todoList={renderTodo} onTodoClick={handleTodoClick}/>
             <div>
