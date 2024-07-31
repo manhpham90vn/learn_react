@@ -2,10 +2,21 @@ import './App.css';
 import TodoFeature from "./features/Todo";
 import {BrowserRouter, Link, NavLink, Route, Routes} from "react-router-dom";
 import AlbumFeature from "./features/Album/components";
+import {useEffect} from "react";
+import productApi from "./api/productApi";
 
 // rsfp: snip
 
 function App() {
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await productApi.getAll()
+            console.log(data)
+        }
+        fetchData()
+    }, [])
+
     return (
         <BrowserRouter>
             <p>Header</p>
