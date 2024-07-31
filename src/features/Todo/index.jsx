@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {useEffect, useMemo} from 'react';
 import TodoList from "./components/TodoList";
+import {useLocation, useNavigate} from "react-router-dom";
+import queryString from "query-string";
 
 function TodoFeature(props) {
     const initTodoList = [
@@ -20,8 +22,18 @@ function TodoFeature(props) {
         },
     ]
 
+    const location = useLocation();
+    const navigate = useNavigate()
     const [todo, setTodo] = React.useState(initTodoList)
-    const [filedTodo, setFiledTodo] = React.useState('all')
+    const [filter, setFilter] = React.useState(() => {
+        const params = queryString.parse(location.search)
+        return params.status || 'all'
+    })
+
+    useEffect(() => {
+        const params = queryString.parse(location.search)
+        setFilter(params.status || 'all')
+    }, [location.search])
 
     const handleTodoClick = (item) => {
         console.log(item)
@@ -37,18 +49,26 @@ function TodoFeature(props) {
     }
 
     const handleShowAll = () => {
-        setFiledTodo('all')
+        const params = queryString.stringify({status: 'all'})
+        const url = `${location.pathname}?${params}`
+        navigate(url, {replace: true})
     }
 
     const handleShowCompleted = () => {
-        setFiledTodo('completed')
+        const params = queryString.stringify({status: 'completed'})
+        const url = `${location.pathname}?${params}`
+        navigate(url, {replace: true})
     }
 
     const handleShowNew = () => {
-        setFiledTodo('new')
+        const params = queryString.stringify({status: 'new'})
+        const url = `${location.pathname}?${params}`
+        navigate(url, {replace: true})
     }
 
-    const renderTodo = todo.filter(todo => filedTodo === 'all' || filedTodo === todo.status)
+    const renderTodo = useMemo(() => {
+        return todo.filter(todo => filter === 'all' || filter === todo.status)
+    }, [todo, filter])
 
     return (
         <div>

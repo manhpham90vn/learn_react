@@ -18,7 +18,6 @@ function App() {
             <NavLink to={"/albums"} style={{color: 'red'}}>Albums</NavLink>
 
             <Routes>
-                <Route path="/" element={<TodoFeature/>}/>
                 <Route path="/todos" element={<TodoFeature/>}/>
                 <Route path="/albums" element={<AlbumFeature/>}/>
             </Routes>
