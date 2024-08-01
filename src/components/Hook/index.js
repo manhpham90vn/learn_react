@@ -1,9 +1,9 @@
 import React from 'react';
-import Example2 from "./example2";
+import Example3 from "./example3";
 
 const Hook = (props) => {
     return (
-        <Example2 />
+        <Example3 />
     )
 }
 
