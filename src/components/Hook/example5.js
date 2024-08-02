@@ -1,30 +1,49 @@
 import React, {useEffect} from 'react';
 import PropTypes from "prop-types";
+import queryString from "query-string";
 
 const Example5 = () => {
 
-    const baseUrl = "https://js-post-api.herokuapp.com/api/posts?_limit=10&_page=1"
-
     const [posts, setPosts] = React.useState([]);
+    const [filter, setFilter] = React.useState({
+        _page: 1,
+        _limit: 10
+    });
+    const [pagination, setPagination] = React.useState({
+        _page: 1,
+        _limit: 10,
+        _totalRows: 1
+    });
+
+    const handlePageChange = (page) => {
+        setFilter({
+            ...filter,
+            _page: page
+        })
+    }
 
     // cách call api đúng
     useEffect(() => {
         async function fetchPosts() {
             try {
+                const params = queryString.stringify(filter)
+                const baseUrl = `https://js-post-api.herokuapp.com/api/posts?${params}`
                 const response = await fetch(baseUrl)
                 const json = await response.json();
-                const {data} = json;
+                const {data, pagination} = json;
                 setPosts(data)
+                setPagination(pagination)
             } catch (error) {
                 console.log(error);
             }
         }
 
         fetchPosts()
-    }, []);
+    }, [filter]);
 
     return (<div>
         <PostList posts={posts}/>
+        <Pagination pagination={pagination} onPageChange={handlePageChange}/>
     </div>);
 };
 
@@ -43,6 +62,37 @@ function PostList(props) {
     return (<ul>
         {posts.map((post) => (<li key={post.id}>{post.title}</li>))}
     </ul>);
+}
+
+Pagination.propTypes = {
+    pagination: PropTypes.object.isRequired,
+    onPageChange: PropTypes.func.isRequired,
+};
+
+Pagination.defaultProps = {
+    onPageChange: null
+}
+
+function Pagination(props) {
+
+    const {pagination, onPageChange} = props;
+    const {_page, _limit, _totalRows} = pagination;
+    const totalPage = Math.ceil(_totalRows / _limit);
+
+    const handlePageChange = (page) => {
+        onPageChange(page);
+    }
+
+    return (
+        <div>
+            <button disabled={_page <= 1} onClick={() => handlePageChange(_page - 1)}>
+                Prev
+            </button>
+            <button disabled={_page >= totalPage} onClick={() => handlePageChange(_page + 1)}>
+                Next
+            </button>
+        </div>
+    );
 }
 
 export default Example5;
