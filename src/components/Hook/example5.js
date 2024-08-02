@@ -1,14 +1,19 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import PropTypes from "prop-types";
 import queryString from "query-string";
 
 const Example5 = () => {
 
     const [posts, setPosts] = React.useState([]);
+
+    // đại diện param request
     const [filter, setFilter] = React.useState({
         _page: 1,
-        _limit: 10
+        _limit: 10,
+        title_like: null
     });
+
+    // state cho paging
     const [pagination, setPagination] = React.useState({
         _page: 1,
         _limit: 10,
@@ -19,6 +24,14 @@ const Example5 = () => {
         setFilter({
             ...filter,
             _page: page
+        })
+    }
+
+    const handleSubmit = (value) => {
+        setFilter({
+            ...filter,
+            title_like: value,
+            _page: 1
         })
     }
 
@@ -42,6 +55,7 @@ const Example5 = () => {
     }, [filter]);
 
     return (<div>
+        <PostFilterForm onSubmit={handleSubmit}/>
         <PostList posts={posts}/>
         <Pagination pagination={pagination} onPageChange={handlePageChange}/>
     </div>);
@@ -93,6 +107,38 @@ function Pagination(props) {
             </button>
         </div>
     );
+}
+
+const PostFilterForm = ({onSubmit}) => {
+
+    // useRef không thay đổi giữa các lần render
+    const typingTimeOutRef = useRef(null)
+
+    const handleSearchTermChange = (e) => {
+        e.preventDefault()
+
+        if (typingTimeOutRef.current) {
+            clearTimeout(typingTimeOutRef.current)
+        }
+
+        typingTimeOutRef.current = setTimeout(() => {
+            onSubmit(e.target.value)
+        }, 300)
+    }
+
+    return (
+        <form>
+            <input type="text" onChange={handleSearchTermChange}/>
+        </form>
+    );
+};
+
+PostFilterForm.prototype = {
+    onSubmit: PropTypes.func
+}
+
+PostFilterForm.defaultProps = {
+    onSubmit: null
 }
 
 export default Example5;
