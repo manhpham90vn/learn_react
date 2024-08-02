@@ -10,7 +10,7 @@ const Example1 = () => {
         return localStorage.getItem('color') || 'deeppink';
     });
 
-    // vì init state chỉ sử dụng 1 lần nên sẽ viết dạng như sau
+    // vì init state chỉ sử dụng 1 lần nên sẽ viết dạng như sau nếu cần tính toán phức tạp
     const [text, setText] = React.useState(() => {
         return ""
     });
@@ -27,11 +27,9 @@ const Example1 = () => {
         localStorage.setItem('color', color)
     }
 
-    return (
-        <div className="color-box" style={{backgroundColor: color}} onClick={onClick}>
+    return (<div className="color-box" style={{backgroundColor: color}} onClick={onClick}>
 
-        </div>
-    );
+    </div>);
 };
 
 export default Example1;

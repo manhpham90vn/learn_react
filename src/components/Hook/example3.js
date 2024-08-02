@@ -55,13 +55,11 @@ const Example3 = () => {
     console.log("Tiến hành render")
 
     // render
-    return (
-        <div>
+    return (<div>
             {mount && (<div style={{width: 100, height: 100, backgroundColor: color}}></div>)}
             <button onClick={() => setColor(getRandomColor())}>Update</button>
             <button onClick={() => setMount(!mount)}>Mount</button>
-        </div>
-    );
+        </div>);
 };
 
 export default Example3;

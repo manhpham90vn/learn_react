@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
 const Clock = () => {
     const [timeString, setTimeString] = useState(null);
@@ -16,11 +16,9 @@ const Clock = () => {
         }
     }, [])
 
-    return (
-        <p style={{fontSize: '42px'}}>
+    return (<p style={{fontSize: '42px'}}>
             {timeString}
-        </p>
-    )
+        </p>)
 
 }
 
