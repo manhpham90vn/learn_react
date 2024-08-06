@@ -3,23 +3,25 @@ import PropTypes from "prop-types";
 
 const Example7 = (props) => {
 
-    const {name} = props
+    const {name, onClick} = props
 
     console.log('render Example7', name)
 
     return (
-        <div>
+        <div onClick={onClick}>
             Hello World! {name}
         </div>
     );
 };
 
 Example7.prototypes = {
-    name: PropTypes.string
+    name: PropTypes.string,
+    onClick: PropTypes.func
 }
 
 Example7.defaultProps = {
-    name: ''
+    name: '',
+    onClick: null
 }
 
 export default React.memo(Example7);

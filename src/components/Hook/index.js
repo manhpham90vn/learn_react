@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useMemo} from 'react';
 import Example6 from "./example6";
 import useMagicColor from "./useMagicColor";
 import Example7 from "./example7";
@@ -13,17 +13,32 @@ const Hook = (props) => {
         setShow(false);
     }
 
+    // trả về 1 function 1 lần duy nhất
+    // prop là dạng func thì là callback
+    const handleEx7Click = useCallback(() => {
+        console.log('Ex7 click')
+    }, [])
+
+    // trả về dữ liệu 1 lần duy nhất
+    // props là dạng data thì là memo
+    const data = useMemo(() => [
+        {
+            name: 'Hello',
+            value: 1
+        }
+    ], [])
+
     console.log('render', count)
 
     return (
         <>
             <button onClick={onClick}>Toggle</button>
-            {show && <Example6 />}
+            {show && <Example6/>}
             {color}
 
             <button onClick={() => setCount(count + 1)}>Increase</button>
             {count}
-            <Example7 name={count} />
+            <Example7 name={count} onClick={handleEx7Click}/>
         </>
     )
 }
