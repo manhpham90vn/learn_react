@@ -3,6 +3,7 @@ import Example6 from "./example6";
 import useMagicColor from "./useMagicColor";
 import Example7 from "./example7";
 import Example8 from "./example8";
+import Example9 from "./example9";
 
 const Hook = (props) => {
 
@@ -41,7 +42,8 @@ const Hook = (props) => {
             {/*{count}*/}
             {/*<Example7 name={count} onClick={handleEx7Click}/>*/}
 
-            <Example8 />
+            {/*<Example8 />*/}
+            <Example9 />
         </>
     )
 }
